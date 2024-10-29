@@ -1,7 +1,7 @@
-const keys = [[
-    "Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P"], // Top row
+const keys = [
+    ["Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P"], // Top row
     ["A", "S", "D", "F", "G", "H", "J", "K", "L"],       // Middle row
-    ["Enter","Z", "X", "C", "V", "B", "N", "M","delete"]                  // Bottom row
+    ["Enter","Z", "X", "C", "V", "B", "N", "M","Backspace"]                  // Bottom row
   ];
 class Square {
     constructor(id, letter){
@@ -63,10 +63,10 @@ class Keyboard {
             this.html += `<div class="k-row">`;
             line.forEach(key => {
                 if (key=="Enter"){
-                    this.html += `<div id="${key}" class="btn btn-secondary button key">${key}</div>`
+                    this.html += `<div id="${key}" class="btn btn-secondary button ">${key}</div>`
 
                 }
-                else if (key=="delete"){
+                else if (key=="Backspace"){
                     this.html += `<div id="${key}" class="button "> <i id="${key}" class="fi fi-tr-delete delete"></i></div>`
                 }
                 else{
@@ -94,8 +94,15 @@ class Game {
         this.lines = this.createLines();
         this.keyboard = new Keyboard(keys);
         this.mapLines();
+        
         addEventListener('keyup',(e)=>{
-            this.addLetter(e.key);
+
+            let array = this.keyboard.keys[0].concat(this.keyboard.keys[1],this.keyboard.keys[2]);
+            // console.log(array);
+                if(array.includes(e.key.toUpperCase()) || array.includes(e.key)){ 
+                    this.addLetter(e.key);
+                }
+        
         });
         Array.from(this.keyboard.htmlKeys).forEach((key)=>{
             key.addEventListener("click", ()=>{
@@ -122,19 +129,51 @@ class Game {
                 container.innerHTML += line.html;;        
         })
     }
+    enter(line){
+        console.log(line);
+        let playedWord = "";
+        line.squares.forEach(square=>{
+            playedWord += square.letter;
+        })
+        console.log(playedWord)
+    }
+    delete(line){
+        const fullSquare = line.squares.findLast(square=>!square.isEmpty);
+        if(fullSquare){
+            fullSquare.setLetter("");
+            fullSquare.isEmpty = true;
+            line.mapSquares();
+            this.mapLines();
+        }
+    }
+
     addLetter(letter) {
         letter = letter.toUpperCase();
         const emptyLine  = this.lines.find((line)=>!line.isPlayed)
-        if(emptyLine){
-            const emptySquare = emptyLine.squares.find((square)=>square.isEmpty);
-            if(emptySquare){
-                if(letter.length == 1 && letter != " ")
-                emptySquare.setLetter(letter);
-                emptyLine.mapSquares();
-                this.mapLines();
+        if(emptyLine){            
+                switch(letter){
+                    case "ENTER":
+                        this.enter(emptyLine);
+                        break;
+                    case "BACKSPACE":
+                    case "DELETE":
+                        this.delete(emptyLine);
+                        break;
+                    default:
+                        const emptySquare = emptyLine.squares.find((square)=>square.isEmpty);
+                        if(emptySquare){
+                        if(letter.length == 1 && letter != " "){
+                            emptySquare.setLetter(letter);
+                            emptyLine.mapSquares();
+                            this.mapLines()
+                        }
+                        }   
+                        break;
+                }
+                
                 // console.log(emptyLine);
             }
         }
     }
-}
+
 const game = new Game();

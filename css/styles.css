@@ -84,11 +84,12 @@
   align-items: center;
   display: flex;
   border-radius: 5px;
+  padding-right: 1rem;
+  padding-left: 1rem;
 }
 .delete{
   font-size: 2rem;
-  padding-right: 1rem;
-  padding-left: 1rem;
+  
   text-align: center;
 
 }
