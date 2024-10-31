@@ -54,7 +54,7 @@ class Keyboard {
         this.baseHtml = `<div class="keyboard">`
         this.createKeys();
         this.mapKeys();
-        this.htmlKeys = document.getElementsByClassName("key")
+        this.htmlKeys = document.getElementsByClassName("keyboard-key")
 
     }
     createKeys(){
@@ -63,15 +63,15 @@ class Keyboard {
             this.html += `<div class="k-row">`;
             line.forEach(key => {
                 if (key=="Enter"){
-                    this.html += `<div id="${key}" class="btn btn-secondary button ">${key}</div>`
+                    this.html += `<div id="${key}" class="btn btn-secondary button keyboard-key">${key}</div>`
 
                 }
                 else if (key=="Backspace"){
-                    this.html += `<div id="${key}" class="button "> <i id="${key}" class="fi fi-tr-delete delete"></i></div>`
+                    this.html += `<div id="${key}" class="button keyboard-key"> <i id="${key}" class="fi fi-tr-delete delete"></i></div>`
                 }
                 else{
 
-                    this.html += `<div id="${key}" class="key">${key}</div>`
+                    this.html += `<div id="${key}" class="key keyboard-key">${key}</div>`
                 }
             });
             this.html += `</div>`;
@@ -106,10 +106,11 @@ class Game {
         });
         Array.from(this.keyboard.htmlKeys).forEach((key)=>{
             key.addEventListener("click", ()=>{
-                this.addLetter(key.textContent);
+                // console.log(key.id)
+                this.addLetter(key.id);
             });
             key.addEventListener("touchstart", ()=>{
-                this.addLetter(key.textContent);
+                this.addLetter(key.id);
             });
         });
         
@@ -130,7 +131,7 @@ class Game {
         })
     }
     enter(line){
-        console.log(line);
+        // console.log(line);
         let playedWord = "";
         line.squares.forEach(square=>{
             playedWord += square.letter;

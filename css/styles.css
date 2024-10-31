@@ -10,6 +10,10 @@
     border-bottom: 1px solid #363636;
     margin-bottom: 30px ;
 
+    -webkit-user-select: none; /* Safari */
+   -ms-user-select: none; /* IE 10 and IE 11 */
+  user-select: none; /* Standard syntax */
+
 
 }
 #container{
@@ -17,7 +21,9 @@
   display: grid;
   text-align: center;
   margin-bottom: 3rem;
- 
+  -webkit-user-select: none; /* Safari */
+  -ms-user-select: none; /* IE 10 and IE 11 */
+  user-select: none; /* Standard syntax */
 }
 .square{
     width: 4rem;
@@ -46,6 +52,9 @@
   display: grid;
   justify-content: center;
   text-align: center;
+  -webkit-user-select: none; /* Safari */
+  -ms-user-select: none; /* IE 10 and IE 11 */
+  user-select: none; /* Standard syntax */
 }
 .keyboard{
   display: grid;
