@@ -9,19 +9,19 @@ class Square {
         this.letter = letter;
         this.setHtml();
         this.isEmpty = true;
-    }
-    updateHtml(letter){
-        this.letter = letter;
-        this.html = `<div id="${this.id}" class="square">${this.letter}</div>`
+        this.highlight = false;
+        this.highlightColor = "#565758"
     }
     setHtml(){
-        this.html = `<div id="${this.id}" class="square">${this.letter}</div>`;
+        this.html = `<div id="${this.id + "flip"}" class="flipper"><div id="${this.id}" class="square">${this.letter}</div></div>`;
     }
     setLetter(letter){
         this.letter = letter;
         this.isEmpty = false;
+        this.highlight = true;
         this.setHtml();
     }
+    
 }
 class Line {
     constructor(id){
@@ -109,9 +109,6 @@ class Game {
                 // console.log(key.id)
                 this.addLetter(key.id);
             });
-            // key.addEventListener("touchstart", ()=>{
-            //     this.addLetter(key.id);
-            // });
         });
         
     }
@@ -127,8 +124,16 @@ class Game {
         const container = document.getElementById('container');
         container.innerHTML = "";
         this.lines.forEach((line)=>{
-                container.innerHTML += line.html;;        
+                container.innerHTML += line.html;
+                line.squares.forEach((square)=>{
+                    if(square.highlight){
+                        let squareElement = document.getElementById(square.id);
+                        squareElement.style.borderColor = square.highlightColor;
+                    }
+                });
+
         })
+
     }
     enter(line){
         // console.log(line);
@@ -136,6 +141,19 @@ class Game {
         line.squares.forEach(square=>{
             playedWord += square.letter;
         })
+        if(playedWord.length == 5){
+            line.squares.forEach((square,index)=>{
+                let flipper = document.getElementById(square.id +"flip");
+                let squareElement = document.getElementById(square.id);
+
+                flipper.style.transitionDelay = `${index*200}ms`;
+                flipper.style.transform= "rotateX(180deg)";
+                squareElement.style.transitionDelay = `${index*200}ms`;
+                squareElement.style.transform = "rotateX(180deg)";
+
+            })
+            line.isPlayed = true;
+        }
         console.log(playedWord)
     }
     delete(line){
@@ -143,6 +161,7 @@ class Game {
         if(fullSquare){
             fullSquare.setLetter("");
             fullSquare.isEmpty = true;
+            fullSquare.highlight = false;
             line.mapSquares();
             this.mapLines();
         }
@@ -175,6 +194,7 @@ class Game {
                 // console.log(emptyLine);
             }
         }
+  
     }
 
 const game = new Game();

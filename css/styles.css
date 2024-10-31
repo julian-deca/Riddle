@@ -37,9 +37,12 @@
     text-align:middle;
     font-size:2rem;
     font-weight: bolder;
-  align-items: center;
+   align-items: center;
+   transition: .7s all linear;
+}
+.flipper{
+  transition: .7s all linear;
 
-    
 }
 .line{
   display: inline-flex;
