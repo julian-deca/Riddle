@@ -109,9 +109,9 @@ class Game {
                 // console.log(key.id)
                 this.addLetter(key.id);
             });
-            key.addEventListener("touchstart", ()=>{
-                this.addLetter(key.id);
-            });
+            // key.addEventListener("touchstart", ()=>{
+            //     this.addLetter(key.id);
+            // });
         });
         
     }
