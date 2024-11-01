@@ -11,6 +11,12 @@ class Square {
         this.isEmpty = true;
         this.highlight = false;
         this.highlightColor = "#565758"
+        this.isCorrect = false;
+        this.entered = false;
+        this.enterColor = ""
+        this.correctColor = "#538d4e"
+        this.incorrectColor = "#3a3a3c"
+        this.wrongOrderColor = "#b59f3b"
     }
     setHtml(){
         this.html = `<div id="${this.id + "flip"}" class="flipper"><div id="${this.id}" class="square">${this.letter}</div></div>`;
@@ -94,6 +100,7 @@ class Game {
         this.lines = this.createLines();
         this.keyboard = new Keyboard(keys);
         this.mapLines();
+        this.word = "WEIRD";
         
         addEventListener('keyup',(e)=>{
 
@@ -126,10 +133,12 @@ class Game {
         this.lines.forEach((line)=>{
                 container.innerHTML += line.html;
                 line.squares.forEach((square)=>{
+                let squareElement = document.getElementById(square.id);
                     if(square.highlight){
-                        let squareElement = document.getElementById(square.id);
                         squareElement.style.borderColor = square.highlightColor;
                     }
+                this.colorSquares(square,squareElement,line);
+
                 });
 
         })
@@ -145,11 +154,24 @@ class Game {
             line.squares.forEach((square,index)=>{
                 let flipper = document.getElementById(square.id +"flip");
                 let squareElement = document.getElementById(square.id);
+                square.entered = true;
+                if(square.letter == this.word[index]) {
+                    square.enterColor = square.correctColor
+                }
+                else if(this.word.includes(square.letter)) {
+                    square.enterColor = square.wrongOrderColor
+                }
+                else {
+                    square.enterColor = square.incorrectColor
+                }
+                this.colorSquares(square,squareElement,line);
+                square.highlight = false;
 
                 flipper.style.transitionDelay = `${index*200}ms`;
                 flipper.style.transform= "rotateX(180deg)";
                 squareElement.style.transitionDelay = `${index*200}ms`;
                 squareElement.style.transform = "rotateX(180deg)";
+                
 
             })
             line.isPlayed = true;
@@ -186,6 +208,7 @@ class Game {
                             emptySquare.setLetter(letter);
                             emptyLine.mapSquares();
                             this.mapLines()
+                            this.expandSquare(emptySquare);
                         }
                         }   
                         break;
@@ -194,6 +217,26 @@ class Game {
                 // console.log(emptyLine);
             }
         }
+
+        expandSquare(square){
+            let squareElement = document.getElementById(square.id);
+            squareElement.style.animation = `grow 50ms`
+            // squareElement.style.transform = "scale(1.05)";
+            // squareElement.style.transitionDelay = `${1000}ms`;
+
+
+        }
+
+        colorSquares(square, squareElement, line){
+            if(square.entered){
+                squareElement.style.transition = `none`;
+                        squareElement.style.backgroundColor = square.enterColor;
+                        squareElement.style.borderColor = "transparent";
+
+                    }
+                squareElement.style.transition = `.7s all linear`;
+                
+    }
   
     }
 

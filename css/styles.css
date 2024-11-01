@@ -29,7 +29,7 @@
     width: 4rem;
     height: 4rem;
     border: 2px solid #363636;
-    border-radius: 3px;
+    border-radius: 2px;
     margin: 2px;
     display: flex;
     justify-content:center;
@@ -103,5 +103,11 @@
   font-size: 2rem;
   
   text-align: center;
+
+}
+
+@keyframes grow {
+  from { transform: scale(1); }
+  to { transform: scale(1.07); }
 
 }
